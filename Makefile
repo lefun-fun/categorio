@@ -4,12 +4,12 @@ install:
 
 .PHONY: build
 build:
-	cd ui && pnpm run lingui:extract && pnpm run lingui:compile
-	pnpm run -r build
+	cd ui && pnpm lingui:extract && pnpm lingui:compile
+	pnpm -r build
 
 .PHONY: test
 test:
-	pnpm run -r test
+	pnpm -r test
 
 .PHONY: format
 format:
@@ -25,8 +25,8 @@ check-format:
 
 .PHONY: watch
 watch:
-	pnpm run -r watch
+	pnpm -r --parallel watch
 
 .PHONY: dev
 dev:
-	cd ui && pnpm run dev
+	cd ui && pnpm dev
