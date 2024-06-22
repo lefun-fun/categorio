@@ -39,9 +39,13 @@ msgid "lefun.description"
 msgstr "Ce jeu n'est qu'un template."
 
 #: src/Board.tsx
-msgid "Roll"
-msgstr "Lancer"
+msgid "Review"
+msgstr "Revue"
 
 #: src/Board.tsx
-msgid "The template game"
-msgstr "Le jeu template"
+msgid "Round {0}"
+msgstr "Ronde {0}"
+
+#: src/Board.tsx
+msgid "Write"
+msgstr "Écriture"
