@@ -1,0 +1,26 @@
+{
+  "name": "categorio-game",
+  "version": "1.0.0",
+  "description": "Game logic for Categorio at https://lefun.fun",
+  "author": "Simon Lemieux",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rm -rf ./dist && pnpm rollup --config",
+    "watch": "pnpm rollup --config --watch"
+  },
+  "devDependencies": {
+    "@lefun/core": "^1.2.0",
+    "@lefun/game": "^1.2.0",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "rollup": "^4.18.0",
+    "tslib": "^2.6.3",
+    "typescript": "^5.5.2"
+  },
+  "peerDependencies": {
+    "@lefun/core": "^1.2.0",
+    "@lefun/game": "^1.2.0"
+  }
+}
