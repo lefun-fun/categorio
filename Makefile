@@ -4,8 +4,8 @@ install:
 
 .PHONY: build
 build:
+	cd game && pnpm build
 	cd ui && pnpm lingui:extract && pnpm lingui:compile
-	pnpm -r build
 
 .PHONY: test
 test:
