@@ -4,6 +4,7 @@ import {
   makeUseSelector,
   // makeUseSelectorShallow,
   useDispatch,
+  useUsername,
 } from "@lefun/ui";
 
 import classNames from "classnames";
@@ -17,6 +18,8 @@ import { Trans, msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 
 import { useFonts } from "./useFonts";
+import { UserId } from "@lefun/core";
+import { review } from "categorio-game";
 
 const useSelector = makeUseSelector<B, PB>();
 // const useSelectorShallow = makeUseSelectorShallow<B, PB>();
@@ -101,6 +104,7 @@ function AnswerInput({ index }: { index: number }) {
           const { value } = e.target;
           setNewAnswer(value);
           dispatch(write({ index, answer: value }));
+          checkPhase();
         }}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
@@ -109,25 +113,73 @@ function AnswerInput({ index }: { index: number }) {
   );
 }
 
+function checkPhase () {
+  const phase = useSelector((state) => state.board.phase);
+  const userId = useSelector(
+    (state) => state.playerboard.userId
+  );
+  const dispatch = useDispatch();
+  if (phase === 'review') {
+    dispatch(review(userId));
+  }
+}
+
+function ReviewContent () {
+  const userIds = useSelector((state) => state.board.userIds)
+  return (
+    <div>
+      {userIds.map((userId: UserId) => <Player key={userId} userId={userId} />)}
+    </div>
+  )
+}
+
+function Player({userId}: {userId: UserId}) {
+  const username = useUsername(userId);
+  const round = useSelector((state) => state.board.round)
+  const roundStep = useSelector((state) => state.board.roundStep)
+  const answers = useSelector((state) => state.board.answers![userId])
+  const answer = answers[roundStep];
+   
+  return(
+   <div className={classNames(!answer && 'opacity-70')}>
+     <div>{username}</div>
+     <div>{answer}</div>
+   </div>
+  )
+}
+
 function Board() {
   useFonts();
-
+  const phase = useSelector((state) => state.board.phase);
   const numCategories = useSelector((state) => state.board.categories.length);
-
-  return (
-    <div className="flex flex-col items-center justify-center w-full h-full overflow-hidden">
-      <div className="w-full max-w-96 h-full max-h-vmd bg-neutral-50 flex flex-col rounded">
-        <Header />
-        <div className="flex-1 flex flex-col justify-between p-2 vmd:p-3 space-y-3.5 overflow-y-auto">
-          {Array(numCategories)
-            .fill(null)
-            .map((_, index) => (
-              <AnswerInput key={index} index={index} />
-            ))}
+  if(phase === 'write'){
+    return (
+      <div className="flex flex-col items-center justify-center w-full h-full overflow-hidden">
+        <div className="w-full max-w-96 h-full max-h-vmd bg-neutral-50 flex flex-col rounded">
+          <Header />
+          <div className="flex-1 flex flex-col justify-between p-2 vmd:p-3 space-y-3.5 overflow-y-auto">
+            {Array(numCategories)
+              .fill(null)
+              .map((_, index) => (
+                <AnswerInput key={index} index={index} />
+              ))}
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
+  else {
+    return (
+      <div className="flex flex-col items-center justify-center w-full h-full overflow-hidden">
+        <div className="w-full max-w-96 h-full max-h-vmd bg-neutral-50 flex flex-col rounded">
+          <Header />
+          <div className="flex-1 flex flex-col justify-between p-2 vmd:p-3 space-y-3.5 overflow-y-auto">
+            {ReviewContent()}
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default Board;

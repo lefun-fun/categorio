@@ -26,9 +26,11 @@ export type Phase = "write" | "review";
 
 export type B = {
   categories: string[];
-
+  userIds: UserId[];
   // Info of the current round.
+  answers?: { [userId: UserId] : string[]; };
   round: number;
+  roundStep: number;
   phase: Phase;
   letter: string;
 };
@@ -44,6 +46,7 @@ type WritePayload = {
 };
 
 const [WRITE, write] = createMove<WritePayload>("write");
+const [REVIEW, review] = createMove<WritePayload>("write");
 
 const moves: Moves<B, PB> = {
   [WRITE]: {
@@ -51,8 +54,19 @@ const moves: Moves<B, PB> = {
       const { answer, index } = payload as WritePayload;
       const { round } = board;
       playerboard.answers[round][index] = answer;
+
+      //Go to review phase when any player has entered 10 answers
+      if (playerboard.answers[round].some(a => a !== "")) {
+        board.phase = "review" as const;
+     }
     },
   },
+  [REVIEW]: {
+    executeNow({ board, playerboard, userId }) {
+      board.answers = {};
+      board.answers[userId] = playerboard.answers[board.round];
+    },
+    }
 };
 
 const game: GameDef<B, PB> = {
@@ -60,6 +74,8 @@ const game: GameDef<B, PB> = {
     const board = {
       categories: CATEGORIES,
       round: 0,
+      roundStep: 0,
+      userIds: players,
       // TODO No letter to start with, then a count them and then only we pick the letter.
       letter: "A",
       phase: "write" as const,
@@ -80,4 +96,4 @@ const game: GameDef<B, PB> = {
   maxPlayers: 10,
 };
 
-export { game, write };
+export { game, write, review };
