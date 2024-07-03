@@ -54,19 +54,21 @@ const moves: Moves<B, PB> = {
       const { answer, index } = payload as WritePayload;
       const { round } = board;
       playerboard.answers[round][index] = answer;
-
       //Go to review phase when any player has entered 10 answers
-      if (playerboard.answers[round].some(a => a !== "")) {
+      if (playerboard.answers[round].every(a => a.length > 0)) {
         board.phase = "review" as const;
      }
     },
-  },
-  [REVIEW]: {
-    executeNow({ board, playerboard, userId }) {
+    execute({ board, playerboards }) {
+      if(board.phase !== "review"){
+        return;
+      }
       board.answers = {};
-      board.answers[userId] = playerboard.answers[board.round];
-    },
+      for (const [userId, playerboard] of Object.entries(playerboards)) {
+        board.answers![userId] = playerboard.answers[board.round];
+      }
     }
+  }
 };
 
 const game: GameDef<B, PB> = {

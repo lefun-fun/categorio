@@ -104,24 +104,12 @@ function AnswerInput({ index }: { index: number }) {
           const { value } = e.target;
           setNewAnswer(value);
           dispatch(write({ index, answer: value }));
-          checkPhase();
         }}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
       ></input>
     </div>
   );
-}
-
-function checkPhase () {
-  const phase = useSelector((state) => state.board.phase);
-  const userId = useSelector(
-    (state) => state.playerboard.userId
-  );
-  const dispatch = useDispatch();
-  if (phase === 'review') {
-    dispatch(review(userId));
-  }
 }
 
 function ReviewContent () {
@@ -135,14 +123,13 @@ function ReviewContent () {
 
 function Player({userId}: {userId: UserId}) {
   const username = useUsername(userId);
-  const round = useSelector((state) => state.board.round)
   const roundStep = useSelector((state) => state.board.roundStep)
   const answers = useSelector((state) => state.board.answers![userId])
   const answer = answers[roundStep];
    
   return(
    <div className={classNames(!answer && 'opacity-70')}>
-     <div>{username}</div>
+     <div><b>{username}</b></div>
      <div>{answer}</div>
    </div>
   )
@@ -152,6 +139,8 @@ function Board() {
   useFonts();
   const phase = useSelector((state) => state.board.phase);
   const numCategories = useSelector((state) => state.board.categories.length);
+  const roundstep = useSelector((state) => state.board.roundStep)
+  const category = useSelector((state) => state.board.categories[roundstep])
   if(phase === 'write'){
     return (
       <div className="flex flex-col items-center justify-center w-full h-full overflow-hidden">
@@ -173,6 +162,7 @@ function Board() {
       <div className="flex flex-col items-center justify-center w-full h-full overflow-hidden">
         <div className="w-full max-w-96 h-full max-h-vmd bg-neutral-50 flex flex-col rounded">
           <Header />
+          <div className="flex justify-center">{category}</div>
           <div className="flex-1 flex flex-col justify-between p-2 vmd:p-3 space-y-3.5 overflow-y-auto">
             {ReviewContent()}
           </div>
