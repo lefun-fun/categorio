@@ -164,7 +164,7 @@ function Board() {
           <Header />
           <div className="flex justify-center">{category}</div>
           <div className="flex-1 flex flex-col justify-between p-2 vmd:p-3 space-y-3.5 overflow-y-auto">
-            {ReviewContent()}
+            <ReviewContent />
           </div>
         </div>
       </div>

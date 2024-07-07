@@ -53,22 +53,31 @@ const moves: Moves<B, PB> = {
     executeNow({ board, playerboard, payload }) {
       const { answer, index } = payload as WritePayload;
       const { round } = board;
-      playerboard.answers[round][index] = answer;
-      //Go to review phase when any player has entered 10 answers
-      if (playerboard.answers[round].every(a => a.length > 0)) {
-        board.phase = "review" as const;
-     }
+      const answerRound = playerboard.answers[round];
+      if (answerRound) {
+        answerRound[index] = answer;
+      }
     },
-    execute({ board, playerboards }) {
-      if(board.phase !== "review"){
+    execute({ board, playerboards, userId }) {
+      const playerboard = playerboards[userId];
+      const { round } = board;
+
+      const answerRound = playerboard.answers[round];
+      //Go to review phase when any player has entered 10 answers
+      if (answerRound.every((a) => a.length > 0)) {
+        board.phase = "review" as const;
+      } else {
         return;
       }
+
       board.answers = {};
+
       for (const [userId, playerboard] of Object.entries(playerboards)) {
-        board.answers![userId] = playerboard.answers[board.round];
+        const playerAnswers = playerboard.answers[board.round];
+        board.answers[userId] = playerAnswers;
       }
-    }
-  }
+    },
+  },
 };
 
 const game: GameDef<B, PB> = {
@@ -81,6 +90,7 @@ const game: GameDef<B, PB> = {
       // TODO No letter to start with, then a count them and then only we pick the letter.
       letter: "A",
       phase: "write" as const,
+      answers: {},
     };
 
     const playerboards: Record<UserId, PB> = {};
