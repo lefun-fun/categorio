@@ -46,7 +46,6 @@ type WritePayload = {
 };
 
 const [WRITE, write] = createMove<WritePayload>("write");
-const [REVIEW, review] = createMove<WritePayload>("review");
 
 const moves: Moves<B, PB> = {
   [WRITE]: {
