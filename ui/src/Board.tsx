@@ -150,7 +150,7 @@ function WriteContent() {
 function ReviewPlayer({ userId }: { userId: UserId }) {
   const username = useUsername(userId);
   const roundStep = useSelector((state) => state.board.roundStep);
-  const answers = useSelector((state) => state.board.answers![userId]);
+  const answers = useSelector((state) => state.board.answers[userId]);
   const answer = answers[roundStep];
 
   return (
