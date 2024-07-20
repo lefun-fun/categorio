@@ -4,11 +4,12 @@ import {
   makeUseSelector,
   // makeUseSelectorShallow,
   useDispatch,
+  useUsername,
 } from "@lefun/ui";
 
 import classNames from "classnames";
 
-import { useState } from "react";
+import { ElementType, useState } from "react";
 
 import { B, PB, write, Phase } from "categorio-game";
 
@@ -17,6 +18,7 @@ import { Trans, msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 
 import { useFonts } from "./useFonts";
+import { UserId } from "@lefun/core";
 
 const useSelector = makeUseSelector<B, PB>();
 // const useSelectorShallow = makeUseSelectorShallow<B, PB>();
@@ -24,6 +26,11 @@ const useSelector = makeUseSelector<B, PB>();
 const phaseNames: Record<Phase, MessageDescriptor> = {
   write: msg`Write`,
   review: msg`Review`,
+};
+
+const phaseToComponent: Record<Phase, ElementType> = {
+  write: WriteContent,
+  review: ReviewContent,
 };
 
 function Header() {
@@ -109,22 +116,62 @@ function AnswerInput({ index }: { index: number }) {
   );
 }
 
+function ReviewContent() {
+  const userIds = useSelector((state) => state.board.userIds);
+  const roundstep = useSelector((state) => state.board.roundStep);
+  const category = useSelector((state) => state.board.categories[roundstep]);
+  return (
+    <div>
+      <div className="flex justify-center">{category}</div>
+      <div className="flex-1 flex flex-col justify-between p-2 vmd:p-3 space-y-3.5 overflow-y-auto">
+        <div>
+          {userIds.map((userId: UserId) => (
+            <ReviewPlayer key={userId} userId={userId} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function WriteContent() {
+  const numCategories = useSelector((state) => state.board.categories.length);
+  return (
+    <div className="flex-1 flex flex-col justify-between p-2 vmd:p-3 space-y-3.5 overflow-y-auto">
+      {Array(numCategories)
+        .fill(null)
+        .map((_, index) => (
+          <AnswerInput key={index} index={index} />
+        ))}
+    </div>
+  );
+}
+
+function ReviewPlayer({ userId }: { userId: UserId }) {
+  const username = useUsername(userId);
+  const roundStep = useSelector((state) => state.board.roundStep);
+  const answers = useSelector((state) => state.board.answers[userId]);
+  const answer = answers[roundStep];
+
+  return (
+    <div className={classNames(!answer && "opacity-70")}>
+      <div>
+        <b>{username}</b>
+      </div>
+      <div>{answer}</div>
+    </div>
+  );
+}
+
 function Board() {
   useFonts();
-
-  const numCategories = useSelector((state) => state.board.categories.length);
-
+  const phase = useSelector((state) => state.board.phase);
+  const Content = phaseToComponent[phase];
   return (
     <div className="flex flex-col items-center justify-center w-full h-full overflow-hidden">
       <div className="w-full max-w-96 h-full max-h-vmd bg-neutral-50 flex flex-col rounded">
         <Header />
-        <div className="flex-1 flex flex-col justify-between p-2 vmd:p-3 space-y-3.5 overflow-y-auto">
-          {Array(numCategories)
-            .fill(null)
-            .map((_, index) => (
-              <AnswerInput key={index} index={index} />
-            ))}
-        </div>
+        <Content />
       </div>
     </div>
   );
