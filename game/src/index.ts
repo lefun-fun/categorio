@@ -47,37 +47,35 @@ type WritePayload = {
   answer: string;
 };
 
-const write: PlayerMove<GS, WritePayload> =
-  //
-  {
-    executeNow({ board, playerboard, payload }) {
-      const { answer, index } = payload as WritePayload;
-      const { round } = board;
-      const answerRound = playerboard.answers[round];
-      if (answerRound) {
-        answerRound[index] = answer;
-      }
-    },
-    execute({ board, playerboards, userId }) {
-      const playerboard = playerboards[userId];
-      const { round } = board;
+const write: PlayerMove<GS, WritePayload> = {
+  executeNow({ board, playerboard, payload }) {
+    const { answer, index } = payload as WritePayload;
+    const { round } = board;
+    const answerRound = playerboard.answers[round];
+    if (answerRound) {
+      answerRound[index] = answer;
+    }
+  },
+  execute({ board, playerboards, userId }) {
+    const playerboard = playerboards[userId];
+    const { round } = board;
 
-      const answerRound = playerboard.answers[round];
-      //Go to review phase when any player has entered 10 answers
-      if (answerRound.every((a) => a.length > 0)) {
-        board.phase = "review" as const;
-      } else {
-        return;
-      }
+    const answerRound = playerboard.answers[round];
+    //Go to review phase when any player has entered 10 answers
+    if (answerRound.every((a) => a.length > 0)) {
+      board.phase = "review" as const;
+    } else {
+      return;
+    }
 
-      board.answers = {};
+    board.answers = {};
 
-      for (const [userId, playerboard] of Object.entries(playerboards)) {
-        const playerAnswers = playerboard.answers[board.round];
-        board.answers[userId] = playerAnswers;
-      }
-    },
-  };
+    for (const [userId, playerboard] of Object.entries(playerboards)) {
+      const playerAnswers = playerboard.answers[board.round];
+      board.answers[userId] = playerAnswers;
+    }
+  },
+};
 
 const game = {
   initialBoards: ({ players }) => {
