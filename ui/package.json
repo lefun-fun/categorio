@@ -16,9 +16,9 @@
   },
   "devDependencies": {
     "@babel/preset-react": "^7.24.7",
-    "@lefun/core": "^1.2.0",
-    "@lefun/dev-server": "^1.2.0",
-    "@lefun/ui": "^1.2.0",
+    "@lefun/core": "^2.0.0",
+    "@lefun/dev-server": "^2.0.0",
+    "@lefun/ui": "^2.0.0",
     "@lingui/cli": "^4.11.1",
     "@lingui/conf": "^4.11.1",
     "@lingui/core": "^4.11.1",

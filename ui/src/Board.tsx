@@ -1,17 +1,12 @@
 import "./index.css";
 
-import {
-  makeUseSelector,
-  // makeUseSelectorShallow,
-  useDispatch,
-  useUsername,
-} from "@lefun/ui";
+import { makeUseSelector, makeUseMakeMove, useUsername } from "@lefun/ui";
 
 import classNames from "classnames";
 
 import { ElementType, useState } from "react";
 
-import { B, PB, write, Phase } from "categorio-game";
+import { G, GS, Phase } from "categorio-game";
 
 import { MessageDescriptor } from "@lingui/core";
 import { Trans, msg } from "@lingui/macro";
@@ -20,8 +15,8 @@ import { useLingui } from "@lingui/react";
 import { useFonts } from "./useFonts";
 import { UserId } from "@lefun/core";
 
-const useSelector = makeUseSelector<B, PB>();
-// const useSelectorShallow = makeUseSelectorShallow<B, PB>();
+const useSelector = makeUseSelector<GS>();
+const useMakeMove = makeUseMakeMove<G>();
 
 const phaseNames: Record<Phase, MessageDescriptor> = {
   write: msg`Write`,
@@ -74,7 +69,7 @@ function AnswerInput({ index }: { index: number }) {
 
   const empty = newAnswer === "";
 
-  const dispatch = useDispatch();
+  const makeMove = useMakeMove();
 
   const [focused, setFocused] = useState(false);
 
@@ -107,7 +102,7 @@ function AnswerInput({ index }: { index: number }) {
         onChange={(e) => {
           const { value } = e.target;
           setNewAnswer(value);
-          dispatch(write({ index, answer: value }));
+          makeMove("write", { index, answer: value });
         }}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}

@@ -1,5 +1,5 @@
 import { UserId } from "@lefun/core";
-import { createMove, GameDef, Moves, PlayerMove } from "@lefun/game";
+import { Game, PlayerMove, GameState } from "@lefun/game";
 
 const NUM_ROUNDS = 3;
 
@@ -40,15 +40,16 @@ export type PB = {
   answers: string[][];
 };
 
+export type GS = GameState<B, PB>;
+
 type WritePayload = {
   index: number;
   answer: string;
 };
 
-const [WRITE, write] = createMove<WritePayload>("write");
-
-const moves: Moves<B, PB> = {
-  [WRITE]: {
+const write: PlayerMove<GS, WritePayload> =
+  //
+  {
     executeNow({ board, playerboard, payload }) {
       const { answer, index } = payload as WritePayload;
       const { round } = board;
@@ -76,10 +77,9 @@ const moves: Moves<B, PB> = {
         board.answers[userId] = playerAnswers;
       }
     },
-  },
-};
+  };
 
-const game: GameDef<B, PB> = {
+const game = {
   initialBoards: ({ players }) => {
     const board = {
       categories: CATEGORIES,
@@ -102,9 +102,11 @@ const game: GameDef<B, PB> = {
 
     return { board, playerboards };
   },
-  moves,
+  playerMoves: { write },
   minPlayers: 1,
   maxPlayers: 10,
-};
+} satisfies Game<GS>;
+
+export type G = typeof game;
 
 export { game, write };

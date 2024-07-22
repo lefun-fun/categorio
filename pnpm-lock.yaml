@@ -15,11 +15,11 @@ importers:
   game:
     devDependencies:
       '@lefun/core':
-        specifier: ^1.2.0
-        version: 1.2.1
+        specifier: ^2.0.0
+        version: 2.0.0
       '@lefun/game':
-        specifier: ^1.2.0
-        version: 1.2.1(@lefun/core@1.2.1)
+        specifier: ^2.0.0
+        version: 2.0.0(@lefun/core@2.0.0)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
         version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@5.5.2)
@@ -46,14 +46,14 @@ importers:
         specifier: ^7.24.7
         version: 7.24.7(@babel/core@7.24.7)
       '@lefun/core':
-        specifier: ^1.2.0
-        version: 1.2.1
+        specifier: ^2.0.0
+        version: 2.0.0
       '@lefun/dev-server':
-        specifier: ^1.2.0
-        version: 1.2.1(@lefun/core@1.2.1)(@lefun/game@1.2.1(@lefun/core@1.2.1))(@lefun/ui@1.2.1(@lefun/core@1.2.1)(@lefun/game@1.2.1(@lefun/core@1.2.1))(@types/react@18.3.3)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^2.0.0
+        version: 2.0.0(@lefun/core@2.0.0)(@lefun/game@2.0.0(@lefun/core@2.0.0))(@lefun/ui@2.0.0(@lefun/core@2.0.0)(@lefun/game@2.0.0(@lefun/core@2.0.0))(@types/react@18.3.3)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@lingui/core@4.11.1)(@lingui/react@4.11.1(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@lefun/ui':
-        specifier: ^1.2.0
-        version: 1.2.1(@lefun/core@1.2.1)(@lefun/game@1.2.1(@lefun/core@1.2.1))(@types/react@18.3.3)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^2.0.0
+        version: 2.0.0(@lefun/core@2.0.0)(@lefun/game@2.0.0(@lefun/core@2.0.0))(@types/react@18.3.3)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@lingui/cli':
         specifier: ^4.11.1
         version: 4.11.1(typescript@5.5.2)
@@ -581,28 +581,30 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
-  '@lefun/core@1.2.1':
-    resolution: {integrity: sha512-WJgR3q7sT1gC7nde2p05iCKXlHM/h9EJQKkSCbl9NwDuy6XsXgKHnXxUakviT2u6RyLTeY+7+tQ1SL3d1WVJ2A==}
+  '@lefun/core@2.0.0':
+    resolution: {integrity: sha512-xjGSPYRDpmQHWnKPjBKuVRQR+ApMIzq3b2pNC24pr6fMP5IU4iG4tc53OAPS07LgchI+Bj1qiSQ4+dFbamuFtQ==}
 
-  '@lefun/dev-server@1.2.1':
-    resolution: {integrity: sha512-kSHgxI7BMH4d7k7Kp50Wrge/RXyazqJ3PhSN92q8f5mpV+1DJA9fIWDIxbQzbdXctfevi8DGG1cilSMJdtO5KA==}
+  '@lefun/dev-server@2.0.0':
+    resolution: {integrity: sha512-VgP3vyH6LzwJIP/snH6uebjq88B6N/lHB5JECRz9QJBnggCGti2oxGNQSFijO/ixjndy4mdspnY/5PGTyH//lQ==}
     peerDependencies:
-      '@lefun/core': 1.2.1
-      '@lefun/game': 1.2.1
-      '@lefun/ui': 1.2.1
+      '@lefun/core': 2.0.0
+      '@lefun/game': 2.0.0
+      '@lefun/ui': 2.0.0
+      '@lingui/core': ^4.11.2
+      '@lingui/react': ^4.11.2
       react: '>=17.0.2'
       react-dom: '>=17.0.2'
 
-  '@lefun/game@1.2.1':
-    resolution: {integrity: sha512-uZuz8wA1g4xLHoGsfmDdwgB/AAK2cU0mt/vNNluyNnwfqkl0OBfauwg1MRbYoIhMMDJLhgiOMb9tMEqAPFazTQ==}
+  '@lefun/game@2.0.0':
+    resolution: {integrity: sha512-hnr4JMpb4kvpT3gKJLcqtRmXjj1FJUgxYkIuaaXbYvLTkFauaH/jbak6pbkh44wFvVlMExve0rLJ00cvJ8Y4MA==}
     peerDependencies:
-      '@lefun/core': 1.2.1
+      '@lefun/core': 2.0.0
 
-  '@lefun/ui@1.2.1':
-    resolution: {integrity: sha512-8bNSFrS8i3BXwMffA52WPSt8hfDqO1Qb8H8GpVWgrTAhrM+4OemNVCxcRPnc956onDs/lUBJAeCWZjGI7GqEPA==}
+  '@lefun/ui@2.0.0':
+    resolution: {integrity: sha512-xxODM85EcVlKLkG99MOpyMla9H2y4f594iqz2ZEPNzH4HHQfThq1aGYFhrhFdqxTBNOqbvaETDY5l7oocewajg==}
     peerDependencies:
-      '@lefun/core': 1.2.1
-      '@lefun/game': 1.2.1
+      '@lefun/core': 2.0.0
+      '@lefun/game': 2.0.0
       react: '>=17.0.2'
       react-dom: '>=17.0.2'
 
@@ -1445,8 +1447,8 @@ packages:
     engines: {node: '>=4'}
     hasBin: true
 
-  json-edit-react@1.12.0:
-    resolution: {integrity: sha512-FOdVSqqZj1Hg1l7I3F/hnKMV5yyIOnNl6UC0WKhm1jpsk3ZLkPyGzfc5eXSLa9Lb2StY7euGni9swGjyjdYdDw==}
+  json-edit-react@1.15.0:
+    resolution: {integrity: sha512-gUys6ZWjEXhTPj4LokG7VjRb80P/M6e3GPmgHvqOmwZKzaCC+Ow/QGgMz7z0Il/SkCkhZTgO/eY2XS9FaZo93w==}
     peerDependencies:
       react: '>=16.0.0'
 
@@ -1460,9 +1462,6 @@ packages:
 
   jsonfile@4.0.0:
     resolution: {integrity: sha512-m6F1R3z8jjlf2imQHS2Qez5sjKWQzbuuhuJ/FKYFRZvPE3PuHcSMVZzfsLhGVOkfd20obL5SWEBew5ShlquNxg==}
-
-  just-clone@6.2.0:
-    resolution: {integrity: sha512-1IynUYEc/HAwxhi3WDpIpxJbZpMCvvrrmZVqvj9EhpvbH8lls7HhdhiByjL7DkAaWlLIzpC0Xc/VPvy/UxLNjA==}
 
   leven@3.1.0:
     resolution: {integrity: sha512-qsda+H8jTaUaN/x5vzW2rzc+8Rw4TAQ/4KjB46IwK5VH+IlVeeeje/EoZRpiXvIqjFgK84QffqPztGI3VBLG1A==}
@@ -2302,8 +2301,8 @@ packages:
     engines: {node: '>= 14'}
     hasBin: true
 
-  zustand@4.5.2:
-    resolution: {integrity: sha512-2cN1tPkDVkwCy5ickKrI7vijSjPksFRfqS6237NzT0vqSsztTNnQdHw9mmN7uBdk3gceVXU0a+21jFzFzAc9+g==}
+  zustand@4.5.4:
+    resolution: {integrity: sha512-/BPMyLKJPtFEvVL0E9E9BTUM63MNyhPGlvxk1XjrfWTUlV+BR8jufjsovHzrtR6YNcBEcL7cMHovL1n9xHawEg==}
     engines: {node: '>=12.7.0'}
     peerDependencies:
       '@types/react': '>=16.8'
@@ -2699,36 +2698,36 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.4.15
 
-  '@lefun/core@1.2.1': {}
+  '@lefun/core@2.0.0': {}
 
-  '@lefun/dev-server@1.2.1(@lefun/core@1.2.1)(@lefun/game@1.2.1(@lefun/core@1.2.1))(@lefun/ui@1.2.1(@lefun/core@1.2.1)(@lefun/game@1.2.1(@lefun/core@1.2.1))(@types/react@18.3.3)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@lefun/dev-server@2.0.0(@lefun/core@2.0.0)(@lefun/game@2.0.0(@lefun/core@2.0.0))(@lefun/ui@2.0.0(@lefun/core@2.0.0)(@lefun/game@2.0.0(@lefun/core@2.0.0))(@types/react@18.3.3)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@lingui/core@4.11.1)(@lingui/react@4.11.1(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@lefun/core': 1.2.1
-      '@lefun/game': 1.2.1(@lefun/core@1.2.1)
-      '@lefun/ui': 1.2.1(@lefun/core@1.2.1)(@lefun/game@1.2.1(@lefun/core@1.2.1))(@types/react@18.3.3)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@lefun/core': 2.0.0
+      '@lefun/game': 2.0.0(@lefun/core@2.0.0)
+      '@lefun/ui': 2.0.0(@lefun/core@2.0.0)(@lefun/game@2.0.0(@lefun/core@2.0.0))(@types/react@18.3.3)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@lingui/core': 4.11.1
       '@lingui/react': 4.11.1(react@18.3.1)
       classnames: 2.5.1
       immer: 10.1.1
-      json-edit-react: 1.12.0(react@18.3.1)
+      json-edit-react: 1.15.0(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      zustand: 4.5.2(@types/react@18.3.3)(immer@10.1.1)(react@18.3.1)
+      zustand: 4.5.4(@types/react@18.3.3)(immer@10.1.1)(react@18.3.1)
     transitivePeerDependencies:
       - '@types/react'
 
-  '@lefun/game@1.2.1(@lefun/core@1.2.1)':
+  '@lefun/game@2.0.0(@lefun/core@2.0.0)':
     dependencies:
-      '@lefun/core': 1.2.1
+      '@lefun/core': 2.0.0
       lodash-es: 4.17.21
 
-  '@lefun/ui@1.2.1(@lefun/core@1.2.1)(@lefun/game@1.2.1(@lefun/core@1.2.1))(@types/react@18.3.3)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@lefun/ui@2.0.0(@lefun/core@2.0.0)(@lefun/game@2.0.0(@lefun/core@2.0.0))(@types/react@18.3.3)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@lefun/core': 1.2.1
-      '@lefun/game': 1.2.1(@lefun/core@1.2.1)
+      '@lefun/core': 2.0.0
+      '@lefun/game': 2.0.0(@lefun/core@2.0.0)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      zustand: 4.5.2(@types/react@18.3.3)(immer@10.1.1)(react@18.3.1)
+      zustand: 4.5.4(@types/react@18.3.3)(immer@10.1.1)(react@18.3.1)
     transitivePeerDependencies:
       - '@types/react'
       - immer
@@ -3652,10 +3651,8 @@ snapshots:
 
   jsesc@2.5.2: {}
 
-  json-edit-react@1.12.0(react@18.3.1):
+  json-edit-react@1.15.0(react@18.3.1):
     dependencies:
-      json5: 2.2.3
-      just-clone: 6.2.0
       object-property-assigner: 1.3.0
       object-property-extractor: 1.0.11
       react: 18.3.1
@@ -3667,8 +3664,6 @@ snapshots:
   jsonfile@4.0.0:
     optionalDependencies:
       graceful-fs: 4.2.11
-
-  just-clone@6.2.0: {}
 
   leven@3.1.0: {}
 
@@ -4448,7 +4443,7 @@ snapshots:
 
   yaml@2.4.5: {}
 
-  zustand@4.5.2(@types/react@18.3.3)(immer@10.1.1)(react@18.3.1):
+  zustand@4.5.4(@types/react@18.3.3)(immer@10.1.1)(react@18.3.1):
     dependencies:
       use-sync-external-store: 1.2.0(react@18.3.1)
     optionalDependencies:
