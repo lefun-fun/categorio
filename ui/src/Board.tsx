@@ -8,6 +8,7 @@ import {
 } from "@lefun/ui";
 
 import classNames from "classnames";
+import TextBox from "./TextBox";
 
 import { ElementType, useState } from "react";
 
@@ -72,8 +73,6 @@ function AnswerInput({ index }: { index: number }) {
 
   const [newAnswer, setNewAnswer] = useState(answer);
 
-  const empty = !newAnswer;
-
   const makeMove = useMakeMove();
 
   const [focused, setFocused] = useState(false);
@@ -81,41 +80,15 @@ function AnswerInput({ index }: { index: number }) {
   const isPlayer = useIsPlayer();
 
   return (
-    <div className="relative">
-      {(focused || !empty) && (
-        <div
-          className={classNames(
-            "absolute -top-2 left-2 bg-white text-xs text-neutral-700 px-0.5",
-            focused ? "text-primary" : "",
-          )}
-        >
-          <div>{category}</div>
-        </div>
-      )}
-      <input
-        type="text"
-        placeholder={focused ? "" : category}
-        readOnly={!isPlayer}
-        className={classNames(
-          "px-3.5 w-full",
-          "pb-1.5 pt-2",
-          "border border-neutral-400 rounded-sm",
-          "text-neutral-800 placeholder:text-neutral-700",
-          "focus:caret-primary focus:outline-primary",
-          "font-medium placeholder:font-light",
-          "text-lg placeholder:text-base",
-        )}
-        value={newAnswer}
-        // figure out a way to now dispatch for every stroke
-        onChange={(e) => {
-          const { value } = e.target;
-          setNewAnswer(value);
-          makeMove("write", { index, answer: value });
-        }}
-        onFocus={() => isPlayer && setFocused(true)}
-        onBlur={() => isPlayer && setFocused(false)}
-      ></input>
-    </div>
+    <TextBox
+      caption={category}
+      text={newAnswer}
+      readonly={!isPlayer}
+      onChange={(text: string) => {
+        setNewAnswer(text);
+        makeMove("write", { index, answer: text });
+      }}
+    />
   );
 }
 
@@ -127,11 +100,9 @@ function ReviewContent() {
     <div>
       <div className="flex justify-center">{category}</div>
       <div className="flex-1 flex flex-col justify-between p-2 vmd:p-3 space-y-3.5 overflow-y-auto">
-        <div>
-          {userIds.map((userId: UserId) => (
-            <ReviewPlayer key={userId} userId={userId} />
-          ))}
-        </div>
+        {userIds.map((userId: UserId) => (
+          <ReviewPlayer key={userId} userId={userId} />
+        ))}
       </div>
     </div>
   );
@@ -157,12 +128,12 @@ function ReviewPlayer({ userId }: { userId: UserId }) {
   const answer = answers[roundStep];
 
   return (
-    <div className={classNames(!answer && "opacity-70")}>
-      <div>
-        <b>{username}</b>
-      </div>
-      <div>{answer}</div>
-    </div>
+    <TextBox
+      caption={username || ""}
+      text={answer}
+      readonly={true}
+      captionAlwaysOnTop={true}
+    />
   );
 }
 
