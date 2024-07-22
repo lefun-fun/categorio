@@ -1,6 +1,11 @@
 import "./index.css";
 
-import { makeUseSelector, makeUseMakeMove, useUsername } from "@lefun/ui";
+import {
+  makeUseSelector,
+  makeUseMakeMove,
+  useUsername,
+  useIsPlayer,
+} from "@lefun/ui";
 
 import classNames from "classnames";
 
@@ -62,16 +67,18 @@ function Header() {
 function AnswerInput({ index }: { index: number }) {
   const category = useSelector((state) => state.board.categories[index]);
   const answer = useSelector(
-    (state) => state.playerboard.answers[state.board.round][index],
+    (state) => state.playerboard?.answers[state.board.round][index],
   );
 
   const [newAnswer, setNewAnswer] = useState(answer);
 
-  const empty = newAnswer === "";
+  const empty = !newAnswer;
 
   const makeMove = useMakeMove();
 
   const [focused, setFocused] = useState(false);
+
+  const isPlayer = useIsPlayer();
 
   return (
     <div className="relative">
@@ -88,6 +95,7 @@ function AnswerInput({ index }: { index: number }) {
       <input
         type="text"
         placeholder={focused ? "" : category}
+        readOnly={!isPlayer}
         className={classNames(
           "px-3.5 w-full",
           "pb-1.5 pt-2",
@@ -104,8 +112,8 @@ function AnswerInput({ index }: { index: number }) {
           setNewAnswer(value);
           makeMove("write", { index, answer: value });
         }}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
+        onFocus={() => isPlayer && setFocused(true)}
+        onBlur={() => isPlayer && setFocused(false)}
       ></input>
     </div>
   );
