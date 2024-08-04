@@ -4,13 +4,13 @@ import classNames from "classnames";
 export default function TextBox({
   caption,
   text,
-  readonly,
+  readOnly,
   onChange,
   captionAlwaysOnTop = false,
 }: {
   caption: string;
   text: string;
-  readonly: boolean;
+  readOnly: boolean;
   onChange?: (text: string) => void;
   captionAlwaysOnTop?: boolean;
 }) {
@@ -33,7 +33,7 @@ export default function TextBox({
       <input
         type="text"
         placeholder={captionOnTop ? "" : caption}
-        readOnly={readonly}
+        readOnly={readOnly}
         className={classNames(
           "px-3.5 w-full",
           "pb-1.5 pt-2",
@@ -41,7 +41,7 @@ export default function TextBox({
           "text-neutral-800 placeholder:text-neutral-700",
           "font-medium placeholder:font-light",
           "text-lg placeholder:text-base",
-          readonly
+          readOnly
             ? "focus:caret-none focus: outline-none"
             : "focus:caret-primary focus:outline-primary",
         )}
@@ -52,8 +52,8 @@ export default function TextBox({
             onChange(value);
           }
         }}
-        onFocus={() => !readonly && setFocused(true)}
-        onBlur={() => !readonly && setFocused(false)}
+        onFocus={() => !readOnly && setFocused(true)}
+        onBlur={() => !readOnly && setFocused(false)}
       ></input>
     </div>
   );

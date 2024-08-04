@@ -29,6 +29,7 @@ export type B = {
   userIds: UserId[];
   // Info of the current round.
   answers: Record<UserId, string[]>;
+  playerVotes: Record<string, Record<UserId, number>>;
   round: number;
   roundStep: number;
   phase: Phase;
@@ -44,6 +45,11 @@ export type GS = GameState<B, PB>;
 
 type WritePayload = {
   index: number;
+  answer: string;
+};
+
+type VotePayload = {
+  userId: string;
   answer: string;
 };
 
@@ -69,10 +75,29 @@ const write: PlayerMove<GS, WritePayload> = {
     }
 
     board.answers = {};
-
+    board.playerVotes = {};
+    const allAnswers = [];
     for (const [userId, playerboard] of Object.entries(playerboards)) {
       const playerAnswers = playerboard.answers[board.round];
       board.answers[userId] = playerAnswers;
+      allAnswers.push(...playerAnswers);
+    }
+    allAnswers.forEach((a) => {
+      board.playerVotes[a] = {};
+      for (const [userId] of Object.entries(playerboards)) {
+        board.playerVotes[a][userId] = 1;
+      }
+    });
+  },
+};
+
+const vote: PlayerMove<GS, VotePayload> = {
+  executeNow({ board, playerboard, payload }) {
+    //Check if there is
+    if (board.playerVotes[payload.answer][payload.userId] === 1) {
+      board.playerVotes[payload.answer][payload.userId] = 0;
+    } else {
+      board.playerVotes[payload.answer][payload.userId] = 1;
     }
   },
 };
@@ -85,6 +110,7 @@ const game = {
       roundStep: 0,
       userIds: players,
       answers: {},
+      playerVotes: {},
       // TODO No letter to start with, then a count them and then only we pick the letter.
       letter: "A",
       phase: "write" as const,
@@ -100,11 +126,11 @@ const game = {
 
     return { board, playerboards };
   },
-  playerMoves: { write },
+  playerMoves: { write, vote },
   minPlayers: 1,
   maxPlayers: 10,
 } satisfies Game<GS>;
 
 export type G = typeof game;
 
-export { game, write };
+export { game, write, vote };
