@@ -90,6 +90,7 @@ function AnswerInput({ index }: { index: number }) {
         setNewAnswer(text);
         makeMove("write", { index, answer: text });
       }}
+      strikeThrough={false}
     />
   );
 }
@@ -134,11 +135,12 @@ function ReviewPlayer({ userId }: { userId: UserId }) {
     <div className="flex justify-center">
       <TextBox
         caption={username || ""}
-        text={answer}
+        text={answer.answer}
+        strikeThrough={!answer.valid}
         readOnly={true}
         captionAlwaysOnTop={true}
       />
-      <Flag userId={playerUserId} answer={answer}></Flag>
+      <Flag userId={playerUserId} answer={answer.answer}></Flag>
     </div>
   );
 }

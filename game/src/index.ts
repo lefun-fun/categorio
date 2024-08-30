@@ -24,11 +24,16 @@ const NUM_CATEGORIES = CATEGORIES.length;
 
 export type Phase = "write" | "review";
 
+export type answer = {
+  answer: string;
+  valid: boolean;
+};
+
 export type B = {
   categories: string[];
   userIds: UserId[];
   // Info of the current round.
-  answers: Record<UserId, string[]>;
+  answers: Record<UserId, answer[]>;
   playerVotes: Record<string, Record<UserId, number>>;
   round: number;
   roundStep: number;
@@ -76,10 +81,29 @@ const write: PlayerMove<GS, WritePayload> = {
 
     board.answers = {};
     board.playerVotes = {};
-    const allAnswers = [];
+    const allAnswers: string[] = [];
     for (const [userId, playerboard] of Object.entries(playerboards)) {
+      let checkedAnswers: string[] = [];
       const playerAnswers = playerboard.answers[board.round];
-      board.answers[userId] = playerAnswers;
+      board.answers[userId] = playerAnswers.map((a) => {
+        if (
+          playerAnswers.filter(
+            (answer) => answer.toLowerCase() === a.toLowerCase(),
+          ).length > 1
+        ) {
+          checkedAnswers.push(a);
+          return {
+            answer: a,
+            valid: checkedAnswers.includes(a) ? false : true,
+          };
+        } else {
+          return {
+            answer: a,
+            valid: true,
+          };
+        }
+      });
+
       allAnswers.push(...playerAnswers);
     }
     allAnswers.forEach((a) => {

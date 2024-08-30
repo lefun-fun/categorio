@@ -5,12 +5,14 @@ export default function TextBox({
   caption,
   text,
   readOnly,
+  strikeThrough,
   onChange,
   captionAlwaysOnTop = false,
 }: {
   caption: string;
   text: string;
   readOnly: boolean;
+  strikeThrough: boolean;
   onChange?: (text: string) => void;
   captionAlwaysOnTop?: boolean;
 }) {
@@ -44,6 +46,7 @@ export default function TextBox({
           readOnly
             ? "focus:caret-none focus: outline-none"
             : "focus:caret-primary focus:outline-primary",
+          strikeThrough ? "line-through" : "",
         )}
         value={text}
         onChange={(e) => {
