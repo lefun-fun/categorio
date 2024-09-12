@@ -91,10 +91,11 @@ const write: PlayerMove<GS, WritePayload> = {
             (answer) => answer.toLowerCase() === a.toLowerCase(),
           ).length > 1
         ) {
+          const valid = checkedAnswers.includes(a) ? false : true;
           checkedAnswers.push(a);
           return {
             answer: a,
-            valid: checkedAnswers.includes(a) ? false : true,
+            valid: valid
           };
         } else {
           return {
