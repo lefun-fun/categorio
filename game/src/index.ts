@@ -118,7 +118,6 @@ const write: PlayerMove<GS, WritePayload> = {
 
 const vote: PlayerMove<GS, VotePayload> = {
   executeNow({ board, playerboard, payload }) {
-    //Check if there is
     if (board.playerVotes[payload.answer][payload.userId] === 1) {
       board.playerVotes[payload.answer][payload.userId] = 0;
     } else {
