@@ -24,11 +24,17 @@ const NUM_CATEGORIES = CATEGORIES.length;
 
 export type Phase = "write" | "review";
 
+export type answer = {
+  answer: string;
+  valid: boolean;
+};
+
 export type B = {
   categories: string[];
   userIds: UserId[];
   // Info of the current round.
-  answers: Record<UserId, string[]>;
+  answers: Record<UserId, answer[]>;
+  playerVotes: Record<string, Record<UserId, number>>;
   round: number;
   roundStep: number;
   phase: Phase;
@@ -44,6 +50,11 @@ export type GS = GameState<B, PB>;
 
 type WritePayload = {
   index: number;
+  answer: string;
+};
+
+type VotePayload = {
+  userId: string;
   answer: string;
 };
 
@@ -69,11 +80,55 @@ const write: PlayerMove<GS, WritePayload> = {
     }
 
     board.answers = {};
-
+    board.playerVotes = {};
+    const allAnswers: string[] = [];
     for (const [userId, playerboard] of Object.entries(playerboards)) {
+      let checkedAnswers: string[] = [];
       const playerAnswers = playerboard.answers[board.round];
-      board.answers[userId] = playerAnswers;
+      board.answers[userId] = playerAnswers.map((a) => {
+        if (
+          playerAnswers.filter(
+            (answer) => answer.toLowerCase() === a.toLowerCase(),
+          ).length > 1
+        ) {
+          const valid = checkedAnswers.includes(a) ? false : true;
+          checkedAnswers.push(a);
+          return {
+            answer: a,
+            valid: valid,
+          };
+        } else {
+          return {
+            answer: a,
+            valid: true,
+          };
+        }
+      });
+
+      allAnswers.push(...playerAnswers);
     }
+    allAnswers.forEach((a) => {
+      board.playerVotes[a] = {};
+      for (const [userId] of Object.entries(playerboards)) {
+        board.playerVotes[a][userId] = 1;
+      }
+    });
+  },
+};
+
+const vote: PlayerMove<GS, VotePayload> = {
+  executeNow({ board, playerboard, payload }) {
+    if (board.playerVotes[payload.answer][payload.userId] === 1) {
+      board.playerVotes[payload.answer][payload.userId] = 0;
+    } else {
+      board.playerVotes[payload.answer][payload.userId] = 1;
+    }
+  },
+};
+
+const nextStep: PlayerMove<GS> = {
+  executeNow({ board }) {
+    board.roundStep++;
   },
 };
 
@@ -85,6 +140,7 @@ const game = {
       roundStep: 0,
       userIds: players,
       answers: {},
+      playerVotes: {},
       // TODO No letter to start with, then a count them and then only we pick the letter.
       letter: "A",
       phase: "write" as const,
@@ -100,11 +156,11 @@ const game = {
 
     return { board, playerboards };
   },
-  playerMoves: { write },
+  playerMoves: { write, vote, nextStep },
   minPlayers: 1,
   maxPlayers: 10,
 } satisfies Game<GS>;
 
 export type G = typeof game;
 
-export { game, write };
+export { game, write, vote, nextStep };

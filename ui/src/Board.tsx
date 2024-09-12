@@ -5,6 +5,7 @@ import {
   makeUseMakeMove,
   useUsername,
   useIsPlayer,
+  useMyUserId,
 } from "@lefun/ui";
 
 import classNames from "classnames";
@@ -20,6 +21,7 @@ import { useLingui } from "@lingui/react";
 
 import { useFonts } from "./useFonts";
 import { UserId } from "@lefun/core";
+import { Flag } from "./Flag";
 
 const useSelector = makeUseSelector<GS>();
 const useMakeMove = makeUseMakeMove<G>();
@@ -83,11 +85,12 @@ function AnswerInput({ index }: { index: number }) {
     <TextBox
       caption={category}
       text={newAnswer}
-      readonly={!isPlayer}
+      readOnly={!isPlayer}
       onChange={(text: string) => {
         setNewAnswer(text);
         makeMove("write", { index, answer: text });
       }}
+      strikeThrough={false}
     />
   );
 }
@@ -96,6 +99,7 @@ function ReviewContent() {
   const userIds = useSelector((state) => state.board.userIds);
   const roundstep = useSelector((state) => state.board.roundStep);
   const category = useSelector((state) => state.board.categories[roundstep]);
+  const makeMove = useMakeMove();
   return (
     <div>
       <div className="flex justify-center">{category}</div>
@@ -104,6 +108,7 @@ function ReviewContent() {
           <ReviewPlayer key={userId} userId={userId} />
         ))}
       </div>
+      <button onClick={() => makeMove("nextStep")}>Next Question</button>
     </div>
   );
 }
@@ -123,17 +128,22 @@ function WriteContent() {
 
 function ReviewPlayer({ userId }: { userId: UserId }) {
   const username = useUsername(userId);
+  const playerUserId = useMyUserId();
   const roundStep = useSelector((state) => state.board.roundStep);
   const answers = useSelector((state) => state.board.answers[userId]);
   const answer = answers[roundStep];
 
   return (
-    <TextBox
-      caption={username || ""}
-      text={answer}
-      readonly={true}
-      captionAlwaysOnTop={true}
-    />
+    <div className="flex justify-center">
+      <TextBox
+        caption={username || ""}
+        text={answer.answer}
+        strikeThrough={!answer.valid}
+        readOnly={true}
+        captionAlwaysOnTop={true}
+      />
+      <Flag userId={playerUserId} answer={answer.answer}></Flag>
+    </div>
   );
 }
 
