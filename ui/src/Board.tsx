@@ -99,6 +99,7 @@ function ReviewContent() {
   const userIds = useSelector((state) => state.board.userIds);
   const roundstep = useSelector((state) => state.board.roundStep);
   const category = useSelector((state) => state.board.categories[roundstep]);
+  const makeMove = useMakeMove();
   return (
     <div>
       <div className="flex justify-center">{category}</div>
@@ -107,6 +108,7 @@ function ReviewContent() {
           <ReviewPlayer key={userId} userId={userId} />
         ))}
       </div>
+      <button onClick={() => makeMove("nextStep")}>Next Question</button>
     </div>
   );
 }

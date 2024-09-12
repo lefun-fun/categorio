@@ -95,7 +95,7 @@ const write: PlayerMove<GS, WritePayload> = {
           checkedAnswers.push(a);
           return {
             answer: a,
-            valid: valid
+            valid: valid,
           };
         } else {
           return {
@@ -126,6 +126,12 @@ const vote: PlayerMove<GS, VotePayload> = {
   },
 };
 
+const nextStep: PlayerMove<GS> = {
+  executeNow({ board }) {
+    board.roundStep++;
+  },
+};
+
 const game = {
   initialBoards: ({ players }) => {
     const board = {
@@ -150,11 +156,11 @@ const game = {
 
     return { board, playerboards };
   },
-  playerMoves: { write, vote },
+  playerMoves: { write, vote, nextStep },
   minPlayers: 1,
   maxPlayers: 10,
 } satisfies Game<GS>;
 
 export type G = typeof game;
 
-export { game, write, vote };
+export { game, write, vote, nextStep };
